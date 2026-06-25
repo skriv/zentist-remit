@@ -3476,6 +3476,71 @@ button.rail__item {
 /* hidden attribute must win over .banner display:flex (auto-posted claims hide the adjustment banner) */
 .banner[hidden] { display: none; }
 
+/* ===================== MATCHED PAYMENTS OVERLAY (Cavi AR: claim <> payment) ===================== */
+.matched-overlay {
+  position: fixed;
+  top: var(--header-h);
+  left: var(--rail-w);
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  z-index: 700;
+  display: flex;
+  flex-direction: column;
+}
+.matched-overlay[hidden] { display: none; }
+.matched { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.matched__head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 28px 14px; flex: 0 0 auto;
+}
+.matched__title { margin: 0; font-size: 24px; font-weight: 700; color: var(--text); }
+.matched__close {
+  width: 36px; height: 36px; border: 0; background: transparent; color: var(--text-muted);
+  cursor: pointer; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center;
+}
+.matched__close:hover { background: rgba(0,0,0,0.06); color: var(--text); }
+.matched__body {
+  flex: 1 1 auto; min-height: 0; overflow-y: auto;
+  padding: 0 28px 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;
+}
+@media (max-width: 1100px) { .matched__body { grid-template-columns: 1fr; } }
+.matched__col {
+  background: #fff; border: 1px solid var(--border); border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(16,24,40,0.04); padding: 22px 24px; min-width: 0;
+}
+.matched__col-label { font-size: 15px; color: var(--text-muted); margin-bottom: 14px; }
+.matched__actions { margin-bottom: 14px; }
+.matched-assign {
+  display: inline-flex; align-items: center; gap: 6px; color: var(--accent);
+  font-size: 13px; font-weight: 600; background: transparent; border: 0; cursor: pointer; padding: 0; margin-bottom: 10px;
+}
+.matched-assign:hover { text-decoration: underline; }
+.matched-title-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.matched-name { font-size: 22px; font-weight: 700; color: var(--text); }
+.matched-meta { font-size: 13px; color: var(--text-muted); margin: 2px 0; display: flex; align-items: center; gap: 6px; }
+.matched-cleared-row { display: flex; align-items: center; gap: 10px; justify-content: flex-end; margin: 10px 0 4px; }
+
+.matched-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 7px 28px;
+  margin: 16px 0 4px; padding-top: 14px; border-top: 1px solid var(--border);
+}
+.matched-field { display: flex; align-items: baseline; gap: 8px; font-size: 13px; color: var(--text); min-width: 0; }
+.matched-field label { color: var(--text-muted); flex: 0 0 auto; min-width: 124px; }
+.matched-field b { font-weight: 700; }
+.matched-field__sub { display: block; font-weight: 400; font-size: 12px; color: #167a5e; }
+
+.matched-badge { display: inline-block; border: 1px solid; border-radius: 4px; padding: 1px 7px; font-size: 11px; font-weight: 700; }
+.matched-badge--eft { color: #c2871a; border-color: #f1cf95; background: #fff8e8; }
+.matched-badge--era { color: #0e7a66; border-color: #9ddccf; background: #e8f7f3; }
+.matched-badge--muted { color: var(--text-muted); border-color: var(--border); background: #f7f8fa; }
+.matched-net { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+.matched-net__dot { width: 9px; height: 9px; border-radius: 50%; background: #c7ccd6; display: inline-block; }
+
+.matched-rmt-wrap { width: 100%; overflow-x: auto; }
+.matched-rmt-table { min-width: 1080px; }
+.matched-rmt-table th, .matched-rmt-table td { white-space: nowrap; }
+
 /* ===================== BUNDLE RESET (neutralize artifact wrapper spacing) ===================== */
 html, body { margin: 0 !important; padding: 0 !important; }
 body { background: var(--body-bg); }
@@ -8211,10 +8276,10 @@ body.show-dashpanel .dashboard-view.is-active { display: block; }
                   <div><label>Last Updated:</label><span>September 21, 2025</span></div>
                 </div>
               </div>
-              <a class="caviar-view-payment" href="#" data-goto-page="payments-for-posting">
+              <button class="caviar-view-payment" data-matched-open>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5C21.27 7.61 17 4.5 12 4.5M12 17a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-8a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3"/></svg>
                 View Payment
-              </a>
+              </button>
             </div>
 
             <!-- 3-row meta grid -->
@@ -8313,6 +8378,151 @@ body.show-dashpanel .dashboard-view.is-active { display: block; }
             </div>
           </section>
 
+        </div>
+
+        <!-- ============= Matched Payments overlay (claim <> payment side-by-side) ============= -->
+        <div class="matched-overlay" data-matched hidden>
+          <div class="matched">
+            <div class="matched__head">
+              <h1 class="matched__title">Matched Payments</h1>
+              <button class="matched__close" data-matched-close aria-label="Close">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            </div>
+            <div class="matched__body">
+
+              <!-- LEFT: Aging Claim -->
+              <section class="matched__col">
+                <div class="matched__col-label">Aging Claim</div>
+                <button class="matched-assign">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3m-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3m0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5m8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5"/></svg>
+                  Assign
+                </button>
+                <div class="matched-title-row">
+                  <span class="matched-name">Alex Sample</span>
+                  <span class="status-pill status-pill--amber">Open</span>
+                  <span class="status-pill status-pill--teal">Matched to Payment</span>
+                </div>
+                <div class="matched-meta">DOB: May 5, 2009</div>
+                <div class="matched-meta">DMO - 99000001 <button class="edit-ico edit-ico--small" aria-label="Edit"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zm17.71-10.04a.996.996 0 0 0 0-1.41l-2.5-2.5a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"/></svg></button></div>
+                <div class="matched-meta">Last Updated: September 21, 2025</div>
+
+                <div class="matched-grid">
+                  <div class="matched-field"><label>Subscriber Name:</label><b>Alex B Sample</b></div>
+                  <div class="matched-field"><label>Claim Number:</label><b>CLM-DEMO-1001</b></div>
+                  <div class="matched-field"><label>Subscriber ID:</label><b>DEMO-PT-1001</b></div>
+                  <div class="matched-field"><label>Treatment Provider:</label><b>Sample, Provider</b></div>
+                  <div class="matched-field"><label>Submitted Date:</label><b>May 23, 2024</b></div>
+                  <div class="matched-field"><label>Treatment NPI:</label><b>9999999999</b></div>
+                  <div class="matched-field"><label>Resubmitted Date:</label><b>&mdash;</b></div>
+                  <div class="matched-field"><label>Payer ID:</label><b>DEMO-PAYER-01</b></div>
+                  <div class="matched-field"><label>AR Days:</label><b class="caviar-card__ar caviar-card__ar--high">727</b></div>
+                  <div class="matched-field"><label>Payer:</label><b>Example Insurance Co. <span class="matched-field__sub">Primary Payer</span></b></div>
+                  <div class="matched-field"><label>Total Amount:</label><b>$457.00</b></div>
+                  <div class="matched-field"><label>Billing Provider:</label><b>DMO - 99000001</b></div>
+                  <div class="matched-field"><label>Paid Amount:</label><b>$268.00</b></div>
+                  <div class="matched-field"><label>Billing NPI:</label><b>8888888888</b></div>
+                  <div class="matched-field"><label>TIN:</label><b>999-99-9999</b></div>
+                </div>
+
+                <details class="pfp-section">
+                  <summary class="pfp-section__head">
+                    <span class="pfp-section__title">Show Contact Information</span>
+                    <svg class="pfp-section__chevron" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+                  </summary>
+                  <div class="pfp-section__body">
+                    <div class="caviar-contact-grid">
+                      <div><label>Payer Phone</label><div>(555) 555-0100</div></div>
+                      <div><label>Payer Fax</label><div>(555) 555-0101</div></div>
+                      <div><label>Payer Address</label><div>1 Sample Plaza, Demo City, DM 00000</div></div>
+                      <div><label>Subscriber Phone</label><div>(555) 555-0301</div></div>
+                    </div>
+                  </div>
+                </details>
+
+                <div class="pr-table-wrap" style="margin-top:12px;">
+                  <table class="pr-table caviar-procedures__table">
+                    <thead><tr><th>Code</th><th>DoS</th><th>Description</th><th>Tooth #</th><th>Quadrant</th><th>Surface</th><th class="t-right">Submitted</th></tr></thead>
+                    <tbody>
+                      <tr><td>D0120</td><td>05/23/2024</td><td>Periodic oral evaluation</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td class="t-right">$64.00</td></tr>
+                      <tr><td>D0274</td><td>05/23/2024</td><td>Bitewings &mdash; four radiographs</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td class="t-right">$72.00</td></tr>
+                      <tr><td>D1110</td><td>05/23/2024</td><td>Prophylaxis &mdash; adult</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td class="t-right">$110.00</td></tr>
+                      <tr><td>D2391</td><td>05/23/2024</td><td>Resin-based composite &mdash; one surface, posterior</td><td>14</td><td>UL</td><td>O</td><td class="t-right">$185.00</td></tr>
+                      <tr><td>D9230</td><td>05/23/2024</td><td>Inhalation of nitrous oxide</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td class="t-right">$26.00</td></tr>
+                    </tbody>
+                    <tfoot><tr><td colspan="6"><b>Total submitted</b></td><td class="t-right"><b>$457.00</b></td></tr></tfoot>
+                  </table>
+                </div>
+              </section>
+
+              <!-- RIGHT: Payment -->
+              <section class="matched__col">
+                <div class="matched__col-label">Payment</div>
+                <div class="caviar-detail__actions matched__actions">
+                  <button class="caviar-action"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg> Add Note</button>
+                  <button class="caviar-action"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7zM5 18v2h14v-2z"/></svg> Download</button>
+                  <button class="caviar-action"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96M14 13v4h-4v-4H7l5-5 5 5z"/></svg> Upload EOB</button>
+                  <button class="caviar-action"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2z"/></svg> Unpin Details</button>
+                </div>
+                <div class="matched-title-row">
+                  <span class="matched-name">Alex Sample</span>
+                  <button class="edit-ico edit-ico--small" aria-label="Edit"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zm17.71-10.04a.996.996 0 0 0 0-1.41l-2.5-2.5a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"/></svg></button>
+                </div>
+                <div class="matched-meta">DOB: May 5, 2009</div>
+                <div class="matched-meta">DMO - TX - 999999999 / DMO - SAMPLE</div>
+                <div class="matched-cleared-row">
+                  <span class="cleared-dot"></span>
+                  <span class="cleared-label">PAYMENT CLEARED</span>
+                  <button class="btn btn--primary">Post</button>
+                </div>
+
+                <div class="matched-grid">
+                  <div class="matched-field"><label>Subscriber name:</label><b>Alex B Sample</b></div>
+                  <div class="matched-field"><label>Claim number:</label><b>CLM-DEMO-1001</b></div>
+                  <div class="matched-field"><label>Subscriber ID:</label><b>DEMO-PT-1001</b></div>
+                  <div class="matched-field"><label>Payment method:</label><span class="matched-badge matched-badge--eft">EFT</span></div>
+                  <div class="matched-field"><label>Date of service:</label><b>May 23, 2024</b></div>
+                  <div class="matched-field"><label>Remittance Method:</label><span class="matched-badge matched-badge--era">ERA</span></div>
+                  <div class="matched-field"><label>Received on:</label><b>May 31, 2024</b></div>
+                  <div class="matched-field"><label>Treatment Provider:</label><b>Provider Sample</b></div>
+                  <div class="matched-field"><label>Payment date:</label><b>May 31, 2024</b></div>
+                  <div class="matched-field"><label>Payer:</label><b>Example Insurance Co.</b></div>
+                  <div class="matched-field"><label>Cleared date:</label><b>May 31, 2024</b></div>
+                  <div class="matched-field"><label>Dental Plan Type:</label><span class="matched-badge matched-badge--muted">&mdash;</span></div>
+                  <div class="matched-field"><label>AR Days:</label><b class="caviar-card__ar caviar-card__ar--high">7</b></div>
+                  <div class="matched-field"><label>Network:</label><span class="matched-net"><span class="matched-net__dot"></span>NO STATUS</span></div>
+                  <div class="matched-field"><label>Insurance pays:</label><b>$268.00</b></div>
+                  <div class="matched-field"><label>EFT / Check number:</label><b>DEMO-EFT-4969</b></div>
+                </div>
+
+                <details class="pfp-section" open>
+                  <summary class="pfp-section__head">
+                    <span class="pfp-section__title">Show Service Lines</span>
+                    <svg class="pfp-section__chevron" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+                  </summary>
+                  <div class="pfp-section__body">
+                    <div class="pr-table-wrap matched-rmt-wrap">
+                      <table class="pr-table matched-rmt-table">
+                        <thead><tr>
+                          <th>Code</th><th>Alt. Code</th><th>DoS</th><th>Tooth #</th>
+                          <th class="t-right">Submitted</th><th class="t-right">Contracted</th><th class="t-right">Deductible</th><th class="t-right">Write-off / Adj.</th><th class="t-right">PI Reductions</th><th class="t-right">Other Adj.</th><th class="t-right">Patient Portion</th><th class="t-right">Insurance Paid</th>
+                        </tr></thead>
+                        <tbody>
+                          <tr><td>D0120</td><td>&mdash;</td><td>05/23/2024</td><td>&mdash;</td><td class="t-right">$64.00</td><td class="t-right">$48.00</td><td class="t-right">$0.00</td><td class="t-right">$16.00</td><td class="t-right">$0.00</td><td class="t-right">$0.00</td><td class="t-right">$0.00</td><td class="t-right">$48.00</td></tr>
+                          <tr><td>D0274</td><td>&mdash;</td><td>05/23/2024</td><td>&mdash;</td><td class="t-right">$72.00</td><td class="t-right">$55.00</td><td class="t-right">$0.00</td><td class="t-right">$17.00</td><td class="t-right">$0.00</td><td class="t-right">$0.00</td><td class="t-right">$0.00</td><td class="t-right">$55.00</td></tr>
+                          <tr><td>D1110</td><td>&mdash;</td><td>05/23/2024</td><td>&mdash;</td><td class="t-right">$110.00</td><td class="t-right">$88.00</td><td class="t-right">$0.00</td><td class="t-right">$22.00</td><td class="t-right">$0.00</td><td class="t-right">$0.00</td><td class="t-right">$0.00</td><td class="t-right">$88.00</td></tr>
+                          <tr><td>D2391</td><td>&mdash;</td><td>05/23/2024</td><td>14</td><td class="t-right">$185.00</td><td class="t-right">$107.00</td><td class="t-right">$0.00</td><td class="t-right">$78.00</td><td class="t-right">$0.00</td><td class="t-right">$0.00</td><td class="t-right">$50.00</td><td class="t-right">$57.00</td></tr>
+                          <tr><td>D9230</td><td>&mdash;</td><td>05/23/2024</td><td>&mdash;</td><td class="t-right">$26.00</td><td class="t-right">$20.00</td><td class="t-right">$0.00</td><td class="t-right">$6.00</td><td class="t-right">$0.00</td><td class="t-right">$0.00</td><td class="t-right">$0.00</td><td class="t-right">$20.00</td></tr>
+                        </tbody>
+                        <tfoot><tr><td colspan="4"><b>Total</b></td><td class="t-right"><b>$457.00</b></td><td class="t-right"><b>$318.00</b></td><td class="t-right">$0.00</td><td class="t-right"><b>$139.00</b></td><td class="t-right">$0.00</td><td class="t-right">$0.00</td><td class="t-right"><b>$50.00</b></td><td class="t-right"><b>$268.00</b></td></tr></tfoot>
+                      </table>
+                    </div>
+                  </div>
+                </details>
+              </section>
+
+            </div>
+          </div>
         </div>
 
       </section>
@@ -8882,6 +9092,22 @@ body.show-dashpanel .dashboard-view.is-active { display: block; }
     if (ev.key === 'Escape') {
       document.querySelectorAll('.drawer-backdrop.is-open').forEach(closeDrawer);
     }
+  });
+
+  // ---------- Cavi AR "View Payment" -> Matched Payments overlay ----------
+  function closeMatched() {
+    document.querySelectorAll('.matched-overlay[data-matched]').forEach(function (ov) { ov.setAttribute('hidden', ''); });
+  }
+  document.addEventListener('click', function (ev) {
+    if (ev.target.closest('[data-matched-open]')) {
+      var ov = document.querySelector('.matched-overlay[data-matched]');
+      if (ov) { ov.removeAttribute('hidden'); ov.scrollTop = 0; }
+      return;
+    }
+    if (ev.target.closest('[data-matched-close]')) { closeMatched(); }
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && document.querySelector('.matched-overlay[data-matched]:not([hidden])')) closeMatched();
   });
 
   // ---------- Add Filter slide-out panel ----------
