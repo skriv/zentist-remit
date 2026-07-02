@@ -3541,6 +3541,200 @@ button.rail__item {
 .matched-rmt-table { min-width: 1080px; }
 .matched-rmt-table th, .matched-rmt-table td { white-space: nowrap; }
 
+/* ===================== LEARNING CENTER (right-edge beacon + panel) ===================== */
+.lc-beacon {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  background: var(--accent);
+  border: 0;
+  border-radius: 10px 0 0 10px;
+  color: #fff;
+  cursor: pointer;
+  z-index: 890;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: -2px 2px 8px rgba(16,24,40,0.25);
+}
+.lc-beacon:hover { filter: brightness(1.08); }
+.lc-beacon__q { font-size: 24px; font-weight: 700; line-height: 1; font-family: inherit; }
+.lc-beacon__dot {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #e5484d;
+  border: 2px solid #fff;
+}
+.lc-mask { position: fixed; inset: 0; z-index: 895; background: transparent; }
+.lc-mask[hidden], .lc-beacon[hidden], .lc-panel[hidden] { display: none; }
+
+.lc-panel {
+  position: fixed;
+  top: 10px;
+  right: 0;
+  bottom: 10px;
+  width: 408px;
+  max-width: 94vw;
+  background: #fff;
+  border-radius: 12px 0 0 12px;
+  box-shadow: -6px 4px 28px rgba(16,24,40,0.3);
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.lc-head {
+  background: var(--accent);
+  color: #fff;
+  padding: 18px 22px 18px;
+  flex: 0 0 auto;
+  position: relative;
+}
+.lc-head__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  background: transparent;
+  color: rgba(255,255,255,0.75);
+  cursor: pointer;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.lc-head__close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+.lc-head__title { margin: 0 0 4px; font-size: 22px; font-weight: 700; }
+.lc-head__sub { margin: 0; font-size: 14px; font-weight: 600; }
+.lc-head--sub .lc-head__title { text-align: center; font-size: 17px; margin-bottom: 2px; }
+.lc-head--sub .lc-head__sub { text-align: center; font-size: 13px; }
+.lc-head__back {
+  position: absolute;
+  top: 14px;
+  left: 12px;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.lc-head__back:hover { background: rgba(255,255,255,0.15); }
+.lc-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border-radius: 6px;
+  padding: 9px 12px;
+  margin-top: 14px;
+}
+.lc-search svg { color: #8a919e; flex: 0 0 auto; }
+.lc-search input { border: 0; outline: none; flex: 1; font: inherit; font-size: 13.5px; color: var(--text); background: transparent; }
+.lc-search input::placeholder { color: #8a919e; }
+
+.lc-body { flex: 1 1 auto; overflow-y: auto; min-height: 0; padding: 8px 0; }
+
+.lc-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 16px 22px;
+  font: inherit;
+}
+.lc-row:hover { background: rgba(0,0,0,0.03); }
+.lc-row__icon { flex: 0 0 auto; color: #4a5262; margin-top: 1px; }
+.lc-row__text { flex: 1 1 auto; min-width: 0; }
+.lc-row__title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.lc-row__desc { font-size: 13px; color: var(--text-muted); line-height: 1.45; }
+.lc-row__chev { flex: 0 0 auto; color: #9aa1ad; align-self: center; }
+
+.lc-vrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 14px 22px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+}
+.lc-vrow:hover { background: rgba(0,0,0,0.03); }
+.lc-vrow svg { color: #4a5262; flex: 0 0 auto; }
+
+.lc-card {
+  display: block;
+  width: calc(100% - 32px);
+  text-align: left;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 6px 16px;
+  padding: 14px 16px;
+  cursor: pointer;
+  font: inherit;
+}
+.lc-card:hover { background: rgba(0,0,0,0.02); }
+.lc-card__title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.lc-card__desc { font-size: 13px; color: var(--text-muted); line-height: 1.45; }
+
+.lc-foot {
+  flex: 0 0 auto;
+  display: flex;
+  border-top: 1px solid var(--border);
+  background: #fff;
+}
+.lc-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 10px 0 9px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  color: #6a7180;
+  position: relative;
+}
+.lc-tab.is-active { color: var(--accent); }
+.lc-tab__ico { position: relative; display: inline-flex; }
+.lc-tab__dot {
+  position: absolute;
+  top: -3px;
+  right: -6px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #e5484d;
+}
+/* lc rows/cards: title & desc are spans inside buttons - stack them */
+.lc-row__title, .lc-row__desc, .lc-card__title, .lc-card__desc { display: block; }
+
 /* ===================== BUNDLE RESET (neutralize artifact wrapper spacing) ===================== */
 html, body { margin: 0 !important; padding: 0 !important; }
 body { background: var(--body-bg); }
@@ -9811,6 +10005,145 @@ body.show-dashpanel .dashboard-view.is-active { display: block; }
       seg.setAttribute('data-tip-body', '<b>' + pct + '</b>');
     }
   });
+
+  // ---------- Learning Center (right-edge "?" beacon + resource panel) ----------
+  (function initLearningCenter() {
+    if (document.querySelector('.lc-beacon')) return;
+
+    var ICO_SEARCH = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"/></svg>';
+    var ICO_ROCKET = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>';
+    var ICO_VIDEO = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9.5l5 2.5-5 2.5z"/></svg>';
+    var ICO_VID_SM = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9.5l5 2.5-5 2.5z"/></svg>';
+    var ICO_HOME = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>';
+    var ICO_MEGA = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l14-6v14L3 13z"/><path d="M7 13.5V19a1.5 1.5 0 0 0 3 0v-4"/><path d="M20 9a3 3 0 0 1 0 6"/></svg>';
+    var ICO_CHEV = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>';
+    var ICO_BACK = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>';
+    var ICO_X = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>';
+
+    var VIDEOS = [
+      'Reviewed Status Update',
+      'Manual EOB Attach/Reattach to ERA',
+      'How to Review Denials in Remit AI',
+      'Customize Your Default Landing Page',
+      'Timezone Setting on Remit AI',
+      'Bulk Actions Button',
+      'Locations with Unposted Payments',
+      'Support Tickets Report',
+      'Generating Bulk ERA Files for Payments',
+      'Searching for a Patient in Remit AI',
+      'New Assign to Location Feature',
+      'Introducing the New Lockbox View',
+      'Creating Missing Payment Requests and Uploading EOBs',
+      'Working with Check/VCC Payments on Remit AI',
+      'Introducing Posting Automation in Remit AI',
+      'Creating Multiple Adjustments',
+      'Understanding the New DB Usage Report',
+      'Denial Reason Keyword Filtering',
+      'Introducing Reason AI',
+      'Daily Deposit Report'
+    ];
+    var NEWS = [
+      { t: 'Reviewed Status Update', d: 'We have now separated the Posted Status from the Reviewed Status making it easier for users to have...' },
+      { t: 'Attaching EOB to ERA Claims or Payments', d: 'We are excited to share users now have the capability to attach an EOB to a specific ERA claim or b...' },
+      { t: 'Auto Posting Analytics', d: 'Auto Posting Overview This section provides a broad overview of totals/percentages of what is...' },
+      { t: 'Bank Account Number Display', d: 'We are excited to announce the release of the Bank Account Number Display, a new feature availabl...' },
+      { t: 'Enrollments Dashboard', d: 'A new report has been added to the Analytics and Reporting section of Remit AI. This new dashboard ...' },
+      { t: 'Merge Duplicates', d: 'The team continues to work diligently to improve the matching and merging of duplicate paym...' },
+      { t: 'Assign to Location Button', d: 'We are excited to share another great new feature that has been added to the Payments for Posting p...' },
+      { t: 'Interactive Onboarding Walkthroughs', d: 'We have made getting started with Remit AI easier than ever! Our new Interactive Onboarding Walkthrou...' }
+    ];
+
+    function headHome(title, sub) {
+      return '<div class="lc-head">' +
+        '<button class="lc-head__close" data-lc-close aria-label="Close">' + ICO_X + '</button>' +
+        '<h1 class="lc-head__title">' + title + '</h1>' +
+        '<p class="lc-head__sub">' + sub + '</p>' +
+        '<div class="lc-search">' + ICO_SEARCH + '<input type="text" placeholder="Search in the learning center" /></div>' +
+        '</div>';
+    }
+    function viewHome() {
+      return headHome('Learning Center', 'Learn all the essentials for using Remit AI') +
+        '<div class="lc-body">' +
+          '<button class="lc-row"><span class="lc-row__icon">' + ICO_ROCKET + '</span><span class="lc-row__text">' +
+            '<span class="lc-row__title">Getting Started with Remit AI</span>' +
+            '<span class="lc-row__desc">Learn the basics of navigating and using Remit AI with this quick start guide.</span>' +
+          '</span></button>' +
+          '<button class="lc-row" data-lc-goto="videos"><span class="lc-row__icon">' + ICO_VIDEO + '</span><span class="lc-row__text">' +
+            '<span class="lc-row__title">Video Tutorials</span>' +
+            '<span class="lc-row__desc">View our video tutorials to learn more about Remit AI.</span>' +
+          '</span><span class="lc-row__chev">' + ICO_CHEV + '</span></button>' +
+        '</div>' + foot('home');
+    }
+    function viewVideos() {
+      return '<div class="lc-head lc-head--sub">' +
+          '<button class="lc-head__back" data-lc-goto="home" aria-label="Back">' + ICO_BACK + '</button>' +
+          '<button class="lc-head__close" data-lc-close aria-label="Close">' + ICO_X + '</button>' +
+          '<h1 class="lc-head__title">Video Tutorials</h1>' +
+          '<p class="lc-head__sub">View our video tutorials to learn more about Remit AI.</p>' +
+        '</div>' +
+        '<div class="lc-body">' +
+          VIDEOS.map(function (v) { return '<button class="lc-vrow">' + ICO_VID_SM + '<span>' + v + '</span></button>'; }).join('') +
+        '</div>' + foot('home');
+    }
+    function viewNews() {
+      return '<div class="lc-head lc-head--sub">' +
+          '<button class="lc-head__close" data-lc-close aria-label="Close">' + ICO_X + '</button>' +
+          '<h1 class="lc-head__title">What&#39;s New</h1>' +
+          '<div class="lc-search">' + ICO_SEARCH + '<input type="text" placeholder="Search in the learning center" /></div>' +
+        '</div>' +
+        '<div class="lc-body">' +
+          NEWS.map(function (n) {
+            return '<button class="lc-card"><span class="lc-card__title">' + n.t + '</span><span class="lc-card__desc">' + n.d + '</span></button>';
+          }).join('') +
+        '</div>' + foot('news');
+    }
+    function foot(active) {
+      return '<div class="lc-foot">' +
+        '<button class="lc-tab' + (active === 'home' ? ' is-active' : '') + '" data-lc-goto="home"><span class="lc-tab__ico">' + ICO_HOME + '</span>Home</button>' +
+        '<button class="lc-tab' + (active === 'news' ? ' is-active' : '') + '" data-lc-goto="news"><span class="lc-tab__ico">' + ICO_MEGA + '<span class="lc-tab__dot"></span></span>What&#39;s New</button>' +
+        '</div>';
+    }
+
+    var beacon = document.createElement('button');
+    beacon.className = 'lc-beacon';
+    beacon.setAttribute('aria-label', 'Open Learning Center');
+    beacon.innerHTML = '<span class="lc-beacon__q">?</span><span class="lc-beacon__dot"></span>';
+    var mask = document.createElement('div');
+    mask.className = 'lc-mask';
+    mask.setAttribute('hidden', '');
+    var panel = document.createElement('aside');
+    panel.className = 'lc-panel';
+    panel.setAttribute('hidden', '');
+    panel.setAttribute('aria-label', 'Learning Center');
+    document.body.appendChild(beacon);
+    document.body.appendChild(mask);
+    document.body.appendChild(panel);
+
+    function renderLC(view) {
+      panel.innerHTML = view === 'videos' ? viewVideos() : view === 'news' ? viewNews() : viewHome();
+    }
+    function openLC() {
+      renderLC('home');
+      panel.removeAttribute('hidden');
+      mask.removeAttribute('hidden');
+      beacon.setAttribute('hidden', '');
+    }
+    function closeLC() {
+      panel.setAttribute('hidden', '');
+      mask.setAttribute('hidden', '');
+      beacon.removeAttribute('hidden');
+    }
+    beacon.addEventListener('click', openLC);
+    mask.addEventListener('click', closeLC);
+    panel.addEventListener('click', function (ev) {
+      if (ev.target.closest('[data-lc-close]')) { closeLC(); return; }
+      var go = ev.target.closest('[data-lc-goto]');
+      if (go) renderLC(go.getAttribute('data-lc-goto'));
+    });
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape' && !panel.hasAttribute('hidden')) closeLC();
+    });
+  })();
 })();
 
 </script>
